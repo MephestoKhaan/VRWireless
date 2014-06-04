@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+  <TextView
+        android:id="@+id/movementorientationtext"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="Steps"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="12" />
+     <TextView
+        android:id="@+id/steptext"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:text="Orientation"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_weight="12" />
+    
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50"
+        android:gravity="bottom"
+        android:orientation="vertical" >
+
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Eyes heading mode?" />
+	
+	    <ToggleButton
+	        android:id="@+id/toggleButton1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:onClick="toggleHeading"
+	        android:text="ToggleButton" />
+    </LinearLayout>
+    
+</LinearLayout>
