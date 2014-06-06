@@ -20,7 +20,7 @@ public class UDPReceiver : MonoBehaviour
 	const int SLEEP_TIME = 50;
 	
 	public SensorListener sensor;
-	public int listeningPort = 8888;
+	public int listeningPort;
 	
 	private bool mRunning;
 	

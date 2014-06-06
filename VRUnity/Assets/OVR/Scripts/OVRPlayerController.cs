@@ -60,7 +60,7 @@ public class OVRPlayerController : OVRComponent
 	// Transfom used to point player in a given direction; 
 	// We should attach objects to this if we want them to rotate 
 	// separately from the head (i.e. the body)
-	protected Transform DirXform = null;
+	public Transform DirXform = null;
 	
 	// We can adjust these to influence speed and rotation of player controller
 	private float MoveScaleMultiplier     = 1.0f; 
@@ -113,22 +113,7 @@ public class OVRPlayerController : OVRComponent
 			Debug.LogWarning("OVRPlayerController: More then 1 OVRCameraController attached.");
 		else
 			CameraController = CameraControllers[0];	
-	
-		// Instantiate a Transform from the main game object (will be used to 
-		// direct the motion of the PlayerController, as well as used to rotate
-		// a visible body attached to the controller)
-		DirXform = null;
-		Transform[] Xforms = gameObject.GetComponentsInChildren<Transform>();
-		
-		for(int i = 0; i < Xforms.Length; i++)
-		{
-			if(Xforms[i].name == "ForwardDirection")
-			{
-				DirXform = Xforms[i];
-				break;
-			}
-		}
-		
+
 		if(DirXform == null)
 			Debug.LogWarning("OVRPlayerController: ForwardDirection game object not found. Do not use.");
 	}
@@ -215,7 +200,8 @@ public class OVRPlayerController : OVRComponent
 			// Compute this for key movement
 			float moveInfluence = Acceleration * 0.1f * MoveScale * MoveScaleMultiplier * 4f;
 			
-			MoveThrottle += DirXform.TransformDirection((Vector3.forward * moveInfluence)) + (stepMomentum * stepDirection);
+			if(DirXform != null)
+				MoveThrottle += DirXform.TransformDirection((Vector3.forward * moveInfluence)) + (stepMomentum * stepDirection);
 			
 			
 			/////////
