@@ -35,6 +35,12 @@ public class UDPReceiver : MonoBehaviour
 	List<UdpClient> clients = new List<UdpClient>();
 	List<Thread> threads = new List<Thread>();
 	
+	void OnGUI()
+	{
+		GUI.Label(new Rect(0,0,200,20),
+			Network.player.ipAddress+":"+listeningPort);	
+	}
+	
     void Awake ()
 	{
 		mRunning = true;

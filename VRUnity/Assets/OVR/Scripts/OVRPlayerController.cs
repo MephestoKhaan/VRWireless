@@ -75,9 +75,12 @@ public class OVRPlayerController : OVRComponent
 	
 	public static void Step(float size, float duration)
 	{
-		if (!Instance) return;
+		if (Instance == null
+			|| Instance.DirXform == null)
+		{
+			return;
+		}
 
-		//Instance.stepMomentum = 0f;
 		HOTween.Kill(Instance);
 		Instance.stepDirection = Instance.DirXform.forward;
 		HOTween.To(Instance, duration * 0.33f, new TweenParms().Prop("stepMomentum", size));
