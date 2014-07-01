@@ -6,7 +6,7 @@ public class MatchGyro : MonoBehaviour {
 	public Transform masterTransform;
 	public HeadingInput heading;
 	public GunInput gun;
-	
+
 	public bool match;
 	
 	void Start()
