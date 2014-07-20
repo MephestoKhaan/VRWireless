@@ -69,7 +69,7 @@ public class OVRPlayerController : OVRComponent
 	//
 	// STATIC VARIABLES
 	//
-	public static bool  AllowMouseRotation      = true;
+	public static bool  AllowMouseRotation      = false;
  	
 	public static OVRPlayerController Instance;
 	
@@ -209,8 +209,10 @@ public class OVRPlayerController : OVRComponent
 			
 			/////////
 			float deltaRotation = 0.0f;
-			if(AllowMouseRotation == false){}
+			if(AllowMouseRotation)
+			{
 				deltaRotation = Input.GetAxis("Mouse X") * 1.0f * 3.25f;
+			}
 			
 			float filteredDeltaRotation = (sDeltaRotationOld * 0.0f) + (deltaRotation * 1.0f);
 			YRotation += filteredDeltaRotation;
