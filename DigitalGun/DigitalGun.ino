@@ -1,4 +1,4 @@
-6wxdsd#define BUFFER_LENGTH    3     // 3 bytes gives us 24 samples
+#define BUFFER_LENGTH    3     // 3 bytes gives us 24 samples
 #define NUM_INPUTS       3    // 6 on the front + 12 on the back
 //#define TARGET_LOOP_TIME 694   // (1/60 seconds) / 24 samples = 694 microseconds per sample 
 //#define TARGET_LOOP_TIME 758  // (1/55 seconds) / 24 samples = 758 microseconds per sample 
@@ -186,10 +186,6 @@ void updateInputStates()
         {
           Keyboard.write(CODE_TRIGGER_OFF);
         }
-        else
-        {
-          Keyboard.release(inputs[i].keyCode); 
-        }
       }
     } 
     else if(!inputs[i].pressed)
@@ -208,7 +204,7 @@ void updateInputStates()
         }
         else
         {
-          Keyboard.press(inputs[i].keyCode); 
+          Keyboard.write(inputs[i].keyCode); 
         }
       }
     }

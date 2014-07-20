@@ -1,6 +1,5 @@
 package com.MephestoKhaan.gyroscopestreamer;
 
-import android.R.string;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -29,7 +28,8 @@ public class GunActivity extends Activity implements VRSensorListener
 		CLIP_ON(KeyEvent.KEYCODE_C),
 		CLIP_OFF(KeyEvent.KEYCODE_V),
 		TRIGGER_ON(KeyEvent.KEYCODE_T),
-		TRIGGER_OFF(KeyEvent.KEYCODE_Y);
+		TRIGGER_OFF(KeyEvent.KEYCODE_Y),
+		PUMP(KeyEvent.KEYCODE_P);
 		
 		private int value;
 	    private GUNEVENTS(int value)
@@ -73,12 +73,14 @@ public class GunActivity extends Activity implements VRSensorListener
 		new SendMessage().execute(PORTFORWARDING.GUN_ORIENTATION.getValue(),"UDP",msg);
 	}
 	
-	public void onFiring(boolean fire)
+	public void onGunEvent(String gunEvent)
 	{
-		vibrate(fire);
+		if(gunEvent == "fire" || gunEvent == "stopfire")
+		{
+			vibrate(gunEvent == "fire");
+		}
 		
-		String msg = fire? "fire" : "stopfire";
-		new SendMessage().execute(PORTFORWARDING.FIRE.getValue(),"UDP",msg);
+		new SendMessage().execute(PORTFORWARDING.FIRE.getValue(),"UDP",gunEvent);
 	}
 
 	public void vibrate(boolean on)
@@ -114,11 +116,23 @@ public class GunActivity extends Activity implements VRSensorListener
 	{
 		if(keyCode == GUNEVENTS.TRIGGER_ON.getValue())
 		{
-			onFiring(true);
+			onGunEvent("fire");
 		}
 		if(keyCode == GUNEVENTS.TRIGGER_OFF.getValue())
 		{
-			onFiring(false);	
+			onGunEvent("stopfire");	
+		}
+		if(keyCode == GUNEVENTS.PUMP.getValue())
+		{
+			onGunEvent("pump");	
+		}
+		if(keyCode == GUNEVENTS.CLIP_ON.getValue())
+		{
+			onGunEvent("clipon");	
+		}
+		if(keyCode == GUNEVENTS.CLIP_OFF.getValue())
+		{
+			onGunEvent("clipoff");	
 		}
 		
 		

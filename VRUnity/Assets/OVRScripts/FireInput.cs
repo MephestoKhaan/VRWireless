@@ -27,13 +27,17 @@ public class FireInput : MonoBehaviour {
 		{
 			gun.SendMessage("OnStopFire");	
 		}
-		else if(mode == "reload")
-		{
-			gun.SendMessage("OnReload");	
-		}
 		else if(mode == "pump")
 		{
-			gun.SendMessage("OnMissile");	
+			gun.SendMessage("OnFireGrenade");	
+		}
+		else if(mode == "clipoff")
+		{
+			gun.SendMessage("OnRemoveClip");	
+		}
+		else if(mode == "clipon")
+		{
+			gun.SendMessage("OnReload");	
 		}
 	}
 	

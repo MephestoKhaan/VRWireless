@@ -33,7 +33,7 @@ var fireGrenade : boolean = false;
 function Update () 
 {
 	if (firing
-	&& ammo.bulletsInClip > 0
+	&& ammo.CanFireBullet()
 	&& Time.time > lastFireTime + 1 / frequency)
 	{
 		ammo.UseBullet();
@@ -73,7 +73,7 @@ function OnStopFire ()
 
 function OnFireGrenade()
 {
-	if(ammo.grenadesInClip > 0)
+	if(ammo.CanFireGrenade())
 	{
 		ammo.UseGrenade();
 		var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);

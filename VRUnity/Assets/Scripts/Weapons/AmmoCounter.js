@@ -1,15 +1,32 @@
 ﻿#pragma strict
 
-var grenadesInClip: int;
-var bulletsInClip : int;
+
+public var grenadesInClip: int;
+public var bulletsInClip : int;
 
 var clipSize : int = 60;
 var bulletsInBelt : int = 300;
+private var isClipOn : boolean = true;
 
 
+function CanFireBullet()
+{
+	return isClipOn && bulletsInClip > 0;
+}
+
+function CanFireGrenade()
+{
+	return grenadesInClip > 0;
+}
+
+function OnRemoveClip()
+{
+	isClipOn = false;
+}
 
 function OnReload()
 {
+	isClipOn = true;
 	var bulletsRequested : int = clipSize - bulletsInClip;
 	
 	var bulletsReloaded : int = Mathf.Min(bulletsInBelt, bulletsRequested);
