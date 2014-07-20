@@ -33,8 +33,10 @@ function Update () {
 	if (targetObject) {
 		var targetPos : Vector3 = targetObject.transform.position;
 		targetPos += transform.right * (Mathf.PingPong (Time.time, 1.0f) - 0.5f) * noise;
-		var targetDir : Vector3 = (targetPos - tr.position);		var targetDist : float = targetDir.magnitude;
+		var targetDir : Vector3 = (targetPos - tr.position);		
+		var targetDist : float = targetDir.magnitude;
 		targetDir /= targetDist;
+		
 		if (Time.time - spawnTime < lifeTime * 0.2 && targetDist > 3)
 			targetDir += transform.right * 0.5 * sideBias;
 		

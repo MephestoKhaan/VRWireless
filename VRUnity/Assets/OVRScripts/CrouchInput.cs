@@ -10,21 +10,16 @@ public class CrouchInput : MonoBehaviour {
 	
 	float maxHeight;
 	public float minHeight;
-	
 	float standingRoll = 1f;
 	
 	public float gyroSensitivity = 2f;
 	
-	public float crouchLevel{
-		get{
-			return mCrouchLevel;
-		}
+	public float crouchLevel
+	{
 		set{
 			SetCrouch(value);
 		}
 	}
-	
-	float mCrouchLevel;
 	
 	float roll;
 	
@@ -58,8 +53,7 @@ public class CrouchInput : MonoBehaviour {
 		float inverse = 1f-normalizedRoll;		
 		inverse*=gyroSensitivity;	
 		
-		normalizedRoll = 1f-inverse;
-		normalizedRoll = Mathf.Clamp01(normalizedRoll);
+		normalizedRoll = Mathf.Clamp01(1f-inverse);
 		
 		SetCrouch(normalizedRoll);
 		
@@ -76,8 +70,5 @@ public class CrouchInput : MonoBehaviour {
 		Vector3 position = holder.localPosition;
 		position.y = height;
 		holder.localPosition = position;
-		
-		
-		mCrouchLevel = crouchAmount;
 	}
 }

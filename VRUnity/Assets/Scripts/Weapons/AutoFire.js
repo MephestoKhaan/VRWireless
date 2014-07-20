@@ -2,7 +2,10 @@
 
 @script RequireComponent (PerFrameRaycast)
 
+var ammo : AmmoCounter;
+
 var bulletPrefab : GameObject;
+var grenadePrefab : GameObject;
 var spawnPoint : Transform;
 var frequency : float = 10;
 var coneAngle : float = 1.5;
@@ -16,7 +19,9 @@ var muzzleFlashFront : GameObject;
 private var lastFireTime : float = -1;
 private var raycast : PerFrameRaycast;
 
-function Awake () {
+
+function Awake ()
+{
 	muzzleFlashFront.SetActive (false);
 
 	raycast = GetComponent.<PerFrameRaycast> ();
@@ -24,48 +29,27 @@ function Awake () {
 		spawnPoint = transform;
 }
 
-function Update () {
-	if (firing) {
-
-		if (Time.time > lastFireTime + 1 / frequency) {
-			// Spawn visual bullet
-			var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);
-			var go : GameObject = Spawner.Spawn (bulletPrefab, spawnPoint.position, spawnPoint.rotation * coneRandomRotation) as GameObject;
-			var bullet : SimpleBullet = go.GetComponent.<SimpleBullet> ();
-
-			lastFireTime = Time.time;
-
-			// Find the object hit by the raycast
-			var hitInfo : RaycastHit = raycast.GetHitInfo ();
-			if (hitInfo.transform) {
-				// Get the health component of the target if any
-				var targetHealth : Health = hitInfo.transform.GetComponent.<Health> ();
-				if (targetHealth) {
-					// Apply damage
-					targetHealth.OnDamage (damagePerSecond / frequency, -spawnPoint.forward);
-				}
-
-				// Get the rigidbody if any
-				if (hitInfo.rigidbody) {
-					// Apply force to the target object at the position of the hit point
-					var force : Vector3 = transform.forward * (forcePerSecond / frequency);
-					hitInfo.rigidbody.AddForceAtPosition (force, hitInfo.point, ForceMode.Impulse);
-				}
-
-				// Ricochet sound
-				var sound : AudioClip = MaterialImpactManager.GetBulletHitSound (hitInfo.collider.sharedMaterial);
-				AudioSource.PlayClipAtPoint (sound, hitInfo.point, hitSoundVolume);
-
-				bullet.dist = hitInfo.distance;
-			}
-			else {
-				bullet.dist = 1000;
-			}
-		}
+var fireGrenade : boolean = false;
+function Update () 
+{
+	if (firing
+	&& ammo.bulletsInClip > 0
+	&& Time.time > lastFireTime + 1 / frequency)
+	{
+		ammo.UseBullet();
+		FireBullet();
+	}
+	
+	if(fireGrenade)
+	{
+		fireGrenade = false;
+		OnFireGrenade();
 	}
 }
 
-function OnStartFire () {
+
+function OnStartFire ()
+{
 	if (Time.timeScale == 0)
 		return;
 
@@ -77,11 +61,63 @@ function OnStartFire () {
 		audio.Play ();
 }
 
-function OnStopFire () {
+function OnStopFire ()
+{
 	firing = false;
 
 	muzzleFlashFront.SetActive (false);
 
 	if (audio)
 		audio.Stop ();
+}
+
+function OnFireGrenade()
+{
+	if(ammo.grenadesInClip > 0)
+	{
+		ammo.UseGrenade();
+		var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);
+		Spawner.Spawn (grenadePrefab, spawnPoint.position, spawnPoint.rotation * coneRandomRotation);
+	}
+}
+
+function FireBullet()
+{
+	// Spawn visual bullet
+	var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);
+	var go : GameObject = Spawner.Spawn (bulletPrefab, spawnPoint.position, spawnPoint.rotation * coneRandomRotation) as GameObject;
+	var bullet : SimpleBullet = go.GetComponent.<SimpleBullet> ();
+
+	lastFireTime = Time.time;
+
+	// Find the object hit by the raycast
+	var hitInfo : RaycastHit = raycast.GetHitInfo ();
+	if (hitInfo.transform)
+	{
+		// Get the health component of the target if any
+		var targetHealth : Health = hitInfo.transform.GetComponent.<Health> ();
+		if (targetHealth)
+		{
+			// Apply damage
+			targetHealth.OnDamage (damagePerSecond / frequency, -spawnPoint.forward);
+		}
+
+		// Get the rigidbody if any
+		if (hitInfo.rigidbody)
+		{
+			// Apply force to the target object at the position of the hit point
+			var force : Vector3 = transform.forward * (forcePerSecond / frequency);
+			hitInfo.rigidbody.AddForceAtPosition (force, hitInfo.point, ForceMode.Impulse);
+		}
+
+		// Ricochet sound
+		var sound : AudioClip = MaterialImpactManager.GetBulletHitSound (hitInfo.collider.sharedMaterial);
+		AudioSource.PlayClipAtPoint (sound, hitInfo.point, hitSoundVolume);
+
+		bullet.dist = hitInfo.distance;
+	}
+	else
+	{
+		bullet.dist = 1000;
+	}
 }

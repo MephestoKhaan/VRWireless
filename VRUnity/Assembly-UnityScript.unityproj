@@ -132,8 +132,10 @@
      <Compile Include="Assets\Scripts\Rain\RainManager.js" />
      <Compile Include="Assets\Scripts\Rain\RainsplashBox.js" />
      <Compile Include="Assets\Scripts\Rain\RainsplashManager.js" />
+     <Compile Include="Assets\Scripts\Weapons\AmmoCounter.js" />
      <Compile Include="Assets\Scripts\Weapons\AutoFire.js" />
      <Compile Include="Assets\Scripts\Weapons\CopyRotation.js" />
+     <Compile Include="Assets\Scripts\Weapons\GrenadeBullet.js" />
      <Compile Include="Assets\Scripts\Weapons\Health.js" />
      <Compile Include="Assets\Scripts\Weapons\HealthFlash.js" />
      <Compile Include="Assets\Scripts\Weapons\PerFrameRaycast.js" />
