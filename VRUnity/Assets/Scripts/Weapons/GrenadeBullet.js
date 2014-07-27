@@ -1,8 +1,8 @@
 ﻿#pragma strict
 
-public var speed : float = 100.0;
+public var speed : float = 150.0;
 public var lifeTime : float = 1.5;
-public var damageAmount : float = 5;
+public var damageAmount : float = 200;
 public var forceAmount : float = 5;
 public var radius : float = 1.0;
 public var ignoreLayers : LayerMask;

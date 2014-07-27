@@ -77,7 +77,8 @@ public class GunActivity extends Activity implements VRSensorListener
 	{
 		if(gunEvent == "fire" || gunEvent == "stopfire")
 		{
-			vibrate(gunEvent == "fire");
+			//TODO disabled until I recommunicate the amount of ammo
+			//vibrate(gunEvent == "fire");
 		}
 		
 		new SendMessage().execute(PORTFORWARDING.FIRE.getValue(),"UDP",gunEvent);

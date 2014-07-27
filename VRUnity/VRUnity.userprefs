@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\OVRScripts\FireInput.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Weapons\GrenadeBullet.js">
     <Files>
-      <File FileName="Assets\Scripts\Weapons\AmmoCounter.js" Line="22" Column="22" />
-      <File FileName="Assets\Scripts\Weapons\AutoFire.js" Line="74" Column="23" />
-      <File FileName="Assets\OVRScripts\FireInput.cs" Line="40" Column="33" />
+      <File FileName="Assets\OVRScripts\GunInput.cs" Line="1" Column="1" />
+      <File FileName="Assets\OVRScripts\FireInput.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Weapons\AmmoCounter.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Weapons\AutoFire.js" Line="94" Column="15" />
+      <File FileName="Assets\Scripts\Weapons\GrenadeBullet.js" Line="3" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -38,12 +38,38 @@ function Update ()
 	{
 		ammo.UseBullet();
 		FireBullet();
+		FiringEffects();
+	}
+	else if(!firing || !ammo.CanFireBullet())
+	{
+		firing = false;
+		FiringEffects();
 	}
 	
 	if(fireGrenade)
 	{
 		fireGrenade = false;
 		OnFireGrenade();
+	}
+}
+
+function FiringEffects()
+{
+	if(muzzleFlashFront.active != firing)
+	{
+		muzzleFlashFront.SetActive (firing);
+	}
+
+	if (audio)
+	{
+		if(firing && !audio.isPlaying)
+		{
+			audio.Play ();
+		}
+		else if(!firing && audio.isPlaying)
+		{
+			audio.Stop();
+		}
 	}
 }
 
@@ -54,21 +80,11 @@ function OnStartFire ()
 		return;
 
 	firing = true;
-
-	muzzleFlashFront.SetActive (true);
-
-	if (audio)
-		audio.Play ();
 }
 
 function OnStopFire ()
 {
 	firing = false;
-
-	muzzleFlashFront.SetActive (false);
-
-	if (audio)
-		audio.Stop ();
 }
 
 function OnFireGrenade()
