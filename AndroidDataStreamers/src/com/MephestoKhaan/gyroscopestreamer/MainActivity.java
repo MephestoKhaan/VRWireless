@@ -50,7 +50,7 @@ public class MainActivity extends Activity
 
 	public void updateAddress(View v)
 	{
-		SendMessage.SetAddress(mIPAddress.getText().toString(), mPortPAddress.getText().toString());
+		SendMessage.SetAddress(mIPAddress.getText().toString(), mPortPAddress.getText().toString(),this);
 	}
 	
 	public void goToMovementActivity(View v)

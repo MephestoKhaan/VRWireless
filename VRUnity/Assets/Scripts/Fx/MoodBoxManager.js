@@ -39,13 +39,13 @@ public function Awake () {
 }
 
 public function Start () {
-	if (!bloom)
+	/*if (!bloom)
 		bloom = Camera.main.gameObject.GetComponent.<MobileBloom> ();	
 	if (!noise)
 		noise = Camera.main.gameObject.GetComponent.<ColoredNoise> ();	
 	if (!fog)
 		fog = Camera.main.gameObject.GetComponentInChildren.<RenderFogPlane> ();
-		
+		*/
 	current = startMoodBox;	
 	UpdateFromMoodBox ();
 }

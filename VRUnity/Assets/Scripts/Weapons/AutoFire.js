@@ -36,38 +36,56 @@ function Update ()
 	&& ammo.CanFireBullet()
 	&& Time.time > lastFireTime + 1 / frequency)
 	{
-		ammo.UseBullet();
-		FireBullet();
-		FiringEffects();
+	    ammo.UseBullet();
+	    if(Network.isServer)
+	    {
+	        networkView.RPC("FireBullet",RPCMode.All,1);
+	        networkView.RPC("FiringEffects",RPCMode.All,1);
+	    }else if(!Network.isClient){
+	        FireBullet(1);
+	        FiringEffects(1);
+	    }
 	}
 	else if(!firing || !ammo.CanFireBullet())
 	{
 		firing = false;
-		FiringEffects();
+		if(Network.isServer)
+		{
+		    networkView.RPC("FiringEffects",RPCMode.All,0);
+		}else if(!Network.isClient){
+		    FiringEffects(0);
+		}
 	}
 	
 	if(fireGrenade)
 	{
-		fireGrenade = false;
-		OnFireGrenade();
+	    fireGrenade = false;
+	    OnFireGrenade();
 	}
 }
 
-function FiringEffects()
+@RPC
+function FiringEffects(enable : int)
 {
-	if(muzzleFlashFront.active != firing)
-	{
-		muzzleFlashFront.SetActive (firing);
-	}
+    var enableEffects : boolean = enable != 0;
+
+    if(muzzleFlashFront.active == enableEffects)
+    {
+        return;
+    }
+
+    muzzleFlashFront.SetActive (enableEffects);
 
 	if (audio)
 	{
-		if(firing && !audio.isPlaying)
-		{
+	    if(enableEffects && !audio.isPlaying)
+	    {
+	        Debug.Log("PLAYING AUDIO");
 			audio.Play ();
 		}
-		else if(!firing && audio.isPlaying)
-		{
+	    else if(!enableEffects && audio.isPlaying)
+	    {
+	        Debug.Log("STOPING AUDIO");
 			audio.Stop();
 		}
 	}
@@ -89,15 +107,28 @@ function OnStopFire ()
 
 function OnFireGrenade()
 {
-	if(ammo.CanFireGrenade())
-	{
-		ammo.UseGrenade();
-		var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);
-		Spawner.Spawn (grenadePrefab, spawnPoint.position, spawnPoint.rotation * coneRandomRotation);
-	}
+    if(ammo.CanFireGrenade())
+    {
+        ammo.UseGrenade();
+        if(Network.isServer)
+        {
+            networkView.RPC("FireGrenade",RPCMode.All,1);
+        }else if(!Network.isClient){
+            FireGrenade(1);
+        }
+    }
 }
 
-function FireBullet()
+@RPC
+function FireGrenade(arg : int)
+{
+    var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);
+    Spawner.Spawn (grenadePrefab, spawnPoint.position, spawnPoint.rotation * coneRandomRotation);
+
+}
+
+@RPC
+function FireBullet(arg : int)
 {
 	// Spawn visual bullet
 	var coneRandomRotation = Quaternion.Euler (Random.Range (-coneAngle, coneAngle), Random.Range (-coneAngle, coneAngle), 0);

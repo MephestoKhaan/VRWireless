@@ -9,6 +9,10 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -16,12 +20,43 @@ import android.util.Log;
 class SendMessage extends AsyncTask<String, Void, Void>
 {
 	private static String IP, PORT;
+	public  static InetAddress broadcastIP;
 	
-	public static void SetAddress(String ip, String port)
+	
+	public static void SetAddress(String ip, String port, Context context)
 	{
 		IP = ip;
 		PORT = port;
+		
+		try {
+			broadcastIP = getBroadcastAddress(context);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+
+    static InetAddress getBroadcastAddress(Context context) throws IOException 
+    {
+    	if(context == null)
+    	{
+    		return null;
+    	}
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        DhcpInfo dhcp = wifi.getDhcpInfo();
+
+        if(dhcp == null)
+        {
+        	return null;
+        }
+        
+        
+        int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
+        byte[] quads = new byte[4];
+        for (int k = 0; k < 4; k++)
+          quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
+        return InetAddress.getByAddress(quads);
+    }
 	
     protected Void doInBackground(String... urls)
     {
@@ -66,6 +101,7 @@ class SendMessage extends AsyncTask<String, Void, Void>
     
     private void sendOverUDP(InetAddress IP, int PORT, String message) throws IOException
     {
+    	
     	DatagramSocket socket = new DatagramSocket(PORT);
 		socket.setBroadcast(true);
 		DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(),IP , PORT);
@@ -78,4 +114,5 @@ class SendMessage extends AsyncTask<String, Void, Void>
     {
     	
     }
+    
  }
